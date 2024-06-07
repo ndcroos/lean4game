@@ -17,7 +17,7 @@ def levelIdFromFileName? (initParams : Lsp.InitializeParams) (fileName : String)
   let fileParts := fileName.splitOn "/"
   if fileParts.length == 3 then
     if let (some level, some game) := (fileParts[2]!.toNat?, initParams.rootUri?) then
-      return some {game, world := fileParts[1]!, level := level}
+      return some {game := .mkSimple game, world := .mkSimple fileParts[1]!, level := level}
   return none
 
 def getLevelByFileName? [Monad m] [MonadEnv m] (initParams : Lsp.InitializeParams) (fileName : String) : m (Option GameLevel) := do
@@ -123,7 +123,7 @@ def findHints (goal : MVarId) (m : DocumentMeta) (initParams : Lsp.InitializePar
           let mut hintFVarsNames : Array Expr := #[]
           for fvar in hintFVars do
             let name₁ ← fvar.fvarId!.getUserName
-            hintFVarsNames := hintFVarsNames.push <| Expr.fvar ⟨s!"«\{{name₁}}»"⟩
+            hintFVarsNames := hintFVarsNames.push <| Expr.fvar ⟨.mkSimple s!"«\{{name₁}}»"⟩
 
           let lctx := (← goal.getDecl).lctx -- the player's local context
           if let some bij ← matchDecls hintFVars lctx.getFVars

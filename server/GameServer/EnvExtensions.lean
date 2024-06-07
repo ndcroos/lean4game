@@ -190,7 +190,7 @@ def getCurLayer [MonadError m] : m Layer := do
 def getCurGameId [Monad m] : m Name := do
   match curGameExt.getState (← getEnv) with
   | some game => return game
-  | none => return defaultGameName
+  | none => return (.mkSimple defaultGameName)
 
 /-- Get the current world -/
 def getCurWorldId [MonadError m] : m Name := do
@@ -468,8 +468,8 @@ def getLevel? (levelId : LevelId) : m (Option GameLevel) := do
 
 def getCurGame [Monad m] : m Game := do
   let some game ← getGame? (← getCurGameId)
-    | let game := {name := defaultGameName}
-      insertGame defaultGameName game
+    | let game := {name := (.mkSimple defaultGameName)}
+      insertGame (.mkSimple defaultGameName) game
       return game
   return game
 
