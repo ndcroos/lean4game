@@ -345,6 +345,11 @@ export function Navigation () {
               text={t("Report Problem")}
               onClick={() => {setPopupContent("report_problem")}}
               inverted={true} />
+			<NavButton
+              icon={faBug}
+              text={t("Ask Zulip")}
+              onClick={() => {setPopupContent("ask_zulip")}}
+              inverted={true} />
           </>}
           <NavButton
             icon={faCircleInfo}
